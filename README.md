@@ -50,18 +50,18 @@ python manage.py runserver
 ```
 
 ## После запуска сервера документация будет доступна по адресу:
-[[http://localhost:port/redoc/]]
+http://localhost:port/redoc/
 
 ## Примеры работы с API.
 
 Получить список всех постов (GET):
-[[http://127.0.0.1:8000/api/v1/posts/]]
+http://127.0.0.1:8000/api/v1/posts/
 
 Получить список всех групп (GET):
-[[http://127.0.0.1:8000/api/v1/groups/]]
+http://127.0.0.1:8000/api/v1/groups/
 
 Создать новый пост (POST):
 (Требуется аутентификация)
-[[http://127.0.0.1:8000/api/v1/posts/]]
+http://127.0.0.1:8000/api/v1/posts/
 
 
