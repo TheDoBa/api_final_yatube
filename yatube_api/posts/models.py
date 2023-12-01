@@ -1,5 +1,6 @@
-from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Q, F
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -28,19 +29,23 @@ class Group(models.Model):
 
 
 class Post(models.Model):
-    """Модель Post"""
+    """Модель Post."""
 
-    text = models.TextField()
+    text = models.TextField(
+        verbose_name='Текст поста'
+    )
     pub_date = models.DateTimeField(
         'Дата публикации',
         auto_now_add=True
     )
     author = models.ForeignKey(
         User,
+        verbose_name='Автор',
         on_delete=models.CASCADE,
         related_name='posts'
     )
     image = models.ImageField(
+        verbose_name='Изображение',
         upload_to='posts/',
         null=True, blank=True
     )
@@ -66,15 +71,19 @@ class Comment(models.Model):
 
     author = models.ForeignKey(
         User,
+        verbose_name='Автор комментария',
         on_delete=models.CASCADE,
         related_name='comments'
     )
     post = models.ForeignKey(
         Post,
+        verbose_name='Пост',
         on_delete=models.CASCADE,
         related_name='comments'
     )
-    text = models.TextField()
+    text = models.TextField(
+        verbose_name='Комментарий'
+    )
     created = models.DateTimeField(
         'Дата добавления',
         auto_now_add=True,
@@ -110,7 +119,11 @@ class Follow(models.Model):
         verbose_name_plural = 'Подписки'
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'following'],
+                fields=('user', 'following'),
                 name='unique_user_following'
+            ),
+            models.CheckConstraint(
+                check=~Q(user=F('following')),
+                name='user_not_following_self'
             )
         ]
